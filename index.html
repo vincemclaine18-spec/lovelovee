@@ -23,15 +23,16 @@
       touch-action: manipulation;
     }
 
-    /* --- PEEKING CHARACTER --- */
+    /* --- PEEKING CHARACTER (NOW SYNCHRONIZED) --- */
     #peeking-girl {
       position: fixed;
       left: -40px; 
       bottom: 10%;
       width: 280px; 
-      z-index: 110; 
+      z-index: 130; /* Higher than overlay so it's clearly visible */
       transform: rotate(12deg);
       pointer-events: none;
+      opacity: 1; /* Start visible immediately with the text */
       transition: opacity 1.5s ease; 
     }
 
@@ -146,16 +147,12 @@
     }
 
     .front { background-color: var(--baby-blue); z-index: 2; justify-content: center; align-items: center; }
-    
     #p1 .front { background-image: url("cover.jpg"); border-left: 10px solid #7fb6e1; }
-    
-    /* --- EDITED: PAGE 2 BUTTON POSITION --- */
     #p2 .front { 
       background-image: url("page2.jpg"); 
-      justify-content: flex-end; /* Pushes content to bottom */
-      align-items: flex-start;    /* Pushes content to left */
+      justify-content: flex-end; 
+      align-items: flex-start; 
     }
-
     #p3 .front { background-image: url("page3.jpg"); justify-content: center; align-items: center; }
     
     .back { background: #fdfdfd; transform: rotateY(180deg); z-index: 1; border-radius: 15px 0 0 15px; }
@@ -258,9 +255,11 @@
           textElement.innerText = "Here it goes loveee hihi";
           textElement.style.opacity = '1';
           isTransitioning = true;
+          // Synchronized fade out for text, overlay, AND image
           setTimeout(() => { 
             overlay.classList.add('hidden'); 
             peekChar.style.opacity = '0'; 
+            setTimeout(() => { peekChar.style.display = 'none'; }, 1500);
           }, 3000); 
         }, 500);
       }
