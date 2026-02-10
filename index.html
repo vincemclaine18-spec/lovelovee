@@ -23,13 +23,12 @@
       touch-action: manipulation;
     }
 
-    /* --- ADJUSTED: PEEKING CHARACTER --- */
+    /* --- PEEKING CHARACTER (ADJUSTED SIZE & POSITION) --- */
     #peeking-girl {
       position: fixed;
-      /* Moved slightly right and shrunk the size */
       left: -40px; 
       bottom: 10%;
-      width: 280px; /* Shrunk from 500px */
+      width: 280px; 
       z-index: 110; 
       transform: rotate(12deg);
       pointer-events: none;
@@ -66,7 +65,7 @@
       50% { transform: translateY(-20px); }
     }
 
-    /* --- FINAL POP-OUT MESSAGE --- */
+    /* --- FINAL POP-OUT MESSAGE (CLEAN / NO DIM) --- */
     #final-message-overlay {
       position: fixed;
       top: 0; left: 0;
@@ -106,6 +105,7 @@
       color: var(--valentine-red); background: white; 
       padding: 12px 25px; border-radius: 50px; 
       display: inline-block; font-size: 1.2rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
 
     /* --- BOOK STYLING --- */
@@ -135,10 +135,9 @@
 
     .front { background-color: var(--baby-blue); z-index: 2; }
     #p1 .front { background-image: url("cover.jpg"); border-left: 10px solid #7fb6e1; }
-    #p2 .front { background-image: url("page2.jpg"); align-items: flex-start; justify-content: flex-end; }
+    #p2 .front { background-image: url("page2.jpg"); }
     #p3 .front { background-image: url("page3.jpg"); }
     .back { background: #fdfdfd; transform: rotateY(180deg); z-index: 1; border-radius: 15px 0 0 15px; }
-
     .page-flipped { transform: rotateY(-180deg); }
 
     /* --- BUTTONS --- */
@@ -146,7 +145,9 @@
       padding: 12px 25px; background: var(--valentine-red); color: white; border: none;
       border-radius: 50px; cursor: pointer; font-weight: bold; font-size: 0.9rem;
       box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-top: auto; margin-bottom: 10px;
+      transition: transform 0.2s;
     }
+    button:active { transform: scale(0.95); }
 
     .btn-wrap { 
       position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
@@ -166,12 +167,22 @@
 
     @keyframes bob { 0%, 100% { transform: scale(1) translateY(0); } 50% { transform: scale(1) translateY(-15px); } }
 
+    /* --- BALLOONS --- */
+    .balloon {
+      position: absolute; bottom: -150px; width: 60px; height: 75px;
+      border-radius: 50%; opacity: 0.8; z-index: 10;
+      animation: floatUp 4s ease-in forwards;
+    }
+    .balloon::after { content: ""; position: absolute; bottom: -40px; left: 50%; width: 2px; height: 40px; background: rgba(255,255,255,0.7); }
+    @keyframes floatUp { to { transform: translateY(-120vh) translateX(50px); opacity: 0; } }
+
     /* --- MOBILE RESPONSIVENESS --- */
     @media (max-width: 500px) {
       .greeting-text { font-size: 2.5rem; }
       .book { width: 300px; height: 400px; }
       #peeking-girl { width: 180px; left: -20px; } 
       .character { width: 120px; }
+      .big-btn { padding: 12px 20px; font-size: 1rem; }
     }
 
     .hidden { opacity: 0; visibility: hidden; }
@@ -255,12 +266,17 @@
     function celebrate() {
       document.getElementById('char-left').classList.add('show-char');
       document.getElementById('char-right').classList.add('show-char');
+      
+      // RESTORED: Balloon creation
+      for(let i=0; i<15; i++) { setTimeout(createBalloon, i * 150); }
+      
       startConfetti();
 
       setTimeout(() => {
         document.getElementById('main-book').classList.add('fade-out-book');
         setTimeout(() => {
           document.getElementById('final-message-overlay').classList.add('show');
+          // RESTORED: Auto-scroll logic
           setTimeout(() => {
             const scrollContainer = document.getElementById('scroll-content');
             const scrollInterval = setInterval(() => {
@@ -274,13 +290,27 @@
       }, 500);
     }
 
+    function createBalloon() {
+      const balloon = document.createElement("div");
+      balloon.className = "balloon";
+      balloon.style.left = Math.random() * 100 + "vw";
+      balloon.style.backgroundColor = Math.random() > 0.5 ? "#a2d2ff" : "#7fb6e1";
+      document.body.appendChild(balloon);
+      setTimeout(() => balloon.remove(), 4000);
+    }
+
     function startConfetti() {
       const duration = 5 * 1000;
       const animationEnd = Date.now() + duration;
+      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 300 };
+      const randomInRange = (min, max) => Math.random() * (max - min) + min;
+      
       const interval = setInterval(function() {
         const timeLeft = animationEnd - Date.now();
         if (timeLeft <= 0) return clearInterval(interval);
-        confetti({ particleCount: 40, spread: 70, origin: { y: 0.6 }, colors: ['#a2d2ff', '#ffffff', '#ff4d6d'] });
+        const particleCount = 50 * (timeLeft / duration);
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }, colors: ['#a2d2ff', '#ffffff', '#7fb6e1'] }));
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }, colors: ['#a2d2ff', '#ffffff', '#7fb6e1'] }));
       }, 250);
     }
 
