@@ -23,16 +23,16 @@
       touch-action: manipulation;
     }
 
-    /* --- PEEKING CHARACTER --- */
+    /* --- ADJUSTED: PEEKING CHARACTER --- */
     #peeking-girl {
       position: fixed;
-      left: -150px; /* Half hidden to look like peeking */
-      bottom: 5%;
-      width: 500px; 
+      /* Moved slightly right and shrunk the size */
+      left: -40px; 
+      bottom: 10%;
+      width: 280px; /* Shrunk from 500px */
       z-index: 110; 
-      transform: rotate(10deg);
+      transform: rotate(12deg);
       pointer-events: none;
-      /* Set transition to match the overlay fade */
       transition: opacity 1.5s ease; 
     }
 
@@ -93,8 +93,7 @@
 
     .pop-out-content h2 { 
       font-family: 'Great Vibes', cursive; 
-      font-size: 3.5rem; 
-      color: white; 
+      font-size: 3.5rem; color: white; 
       text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
     }
 
@@ -171,7 +170,7 @@
     @media (max-width: 500px) {
       .greeting-text { font-size: 2.5rem; }
       .book { width: 300px; height: 400px; }
-      #peeking-girl { width: 300px; left: -100px; } 
+      #peeking-girl { width: 180px; left: -20px; } 
       .character { width: 120px; }
     }
 
@@ -242,7 +241,6 @@
           textElement.innerText = "Here it goes loveee hihi";
           textElement.style.opacity = '1';
           isTransitioning = true;
-          // The girl and the overlay will now fade together after 3 seconds
           setTimeout(() => { 
             overlay.classList.add('hidden'); 
             peekChar.style.opacity = '0'; 
