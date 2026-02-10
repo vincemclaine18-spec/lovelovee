@@ -20,6 +20,20 @@
       font-family: 'Comic Sans MS', cursive, sans-serif;
       perspective: 1500px;
       overflow: hidden;
+      touch-action: manipulation;
+    }
+
+    /* --- PEEKING CHARACTER --- */
+    #peeking-girl {
+      position: fixed;
+      left: -150px; /* Half hidden to look like peeking */
+      bottom: 5%;
+      width: 500px; 
+      z-index: 110; 
+      transform: rotate(10deg);
+      pointer-events: none;
+      /* Set transition to match the overlay fade */
+      transition: opacity 1.5s ease; 
     }
 
     /* --- GREETING OVERLAY --- */
@@ -44,6 +58,7 @@
       animation: floatText 3s ease-in-out infinite;
       padding: 20px;
       transition: opacity 0.5s ease;
+      z-index: 120;
     }
 
     @keyframes floatText {
@@ -51,12 +66,12 @@
       50% { transform: translateY(-20px); }
     }
 
-    /* --- FINAL POP-OUT MESSAGE (NO DIM / NO BACKGROUND) --- */
+    /* --- FINAL POP-OUT MESSAGE --- */
     #final-message-overlay {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: transparent; /* Removed dimming */
+      background: transparent;
       display: flex;
       justify-content: center; align-items: center;
       z-index: 200;
@@ -66,55 +81,38 @@
     }
 
     .pop-out-content {
-      width: 80%;
-      max-width: 700px;
-      height: 80vh;
-      background: transparent; /* Removed box background */
-      padding: 20px;
-      text-align: center;
-      overflow-y: auto;
-      transform: scale(0.8);
+      width: 85%; max-width: 700px; height: 80vh;
+      background: transparent; padding: 20px; text-align: center;
+      overflow-y: auto; transform: scale(0.8);
       transition: transform 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     #final-message-overlay.show { opacity: 1; visibility: visible; }
     #final-message-overlay.show .pop-out-content { transform: scale(1); }
-
     .pop-out-content::-webkit-scrollbar { width: 0; background: transparent; }
 
-    /* Shadow added to text for readability against the main background */
     .pop-out-content h2 { 
       font-family: 'Great Vibes', cursive; 
-      font-size: 4rem; 
+      font-size: 3.5rem; 
       color: white; 
-      margin-bottom: 25px; 
-      text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 2px 2px 10px rgba(0,0,0,0.2);
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
     }
 
     .pop-out-content p { 
-      font-size: 1.5rem; 
-      line-height: 1.8; 
-      color: white; 
-      margin-bottom: 30px; 
-      font-weight: bold;
-      text-shadow: 0 0 15px rgba(255, 255, 255, 0.6), 1px 1px 5px rgba(0,0,0,0.2);
+      font-size: 1.3rem; line-height: 1.6; color: white; font-weight: bold;
+      text-shadow: 1px 1px 5px rgba(0,0,0,0.2);
     }
 
     .final-badge {
-      color: var(--valentine-red); 
-      background: white; 
-      padding: 15px 35px; 
-      border-radius: 50px; 
-      display: inline-block; 
-      font-size: 1.6rem;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      color: var(--valentine-red); background: white; 
+      padding: 12px 25px; border-radius: 50px; 
+      display: inline-block; font-size: 1.2rem;
     }
 
     /* --- BOOK STYLING --- */
     .book { 
       position: relative; 
-      width: 380px; 
-      height: 475px; 
+      width: 380px; height: 475px; 
       transform-style: preserve-3d; 
       z-index: 5; 
       transition: opacity 1.5s ease, transform 1.5s ease;
@@ -130,10 +128,9 @@
     
     .front, .back {
       position: absolute; width: 100%; height: 100%;
-      padding: 20px; box-sizing: border-box;
-      display: flex; flex-direction: column;
+      padding: 20px; display: flex; flex-direction: column;
       backface-visibility: hidden; border-radius: 0 15px 15px 0;
-      background-size: 100% 100%; background-repeat: no-repeat; background-position: center;
+      background-size: 100% 100%; background-repeat: no-repeat;
       justify-content: center; align-items: center;
     }
 
@@ -141,11 +138,7 @@
     #p1 .front { background-image: url("cover.jpg"); border-left: 10px solid #7fb6e1; }
     #p2 .front { background-image: url("page2.jpg"); align-items: flex-start; justify-content: flex-end; }
     #p3 .front { background-image: url("page3.jpg"); }
-
-    .back { 
-      background: #fdfdfd; transform: rotateY(180deg); z-index: 1; border-radius: 15px 0 0 15px;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M20 10c-2 0-4 2-4 5s2 7 4 7 4-4 4-7-2-5-4-5zm-2 15c0 3 2 5 2 5s2-2 2-5h-4z' fill='%23a2d2ff' fill-opacity='0.4'/%3E%3C/svg%3E");
-    }
+    .back { background: #fdfdfd; transform: rotateY(180deg); z-index: 1; border-radius: 15px 0 0 15px; }
 
     .page-flipped { transform: rotateY(-180deg); }
 
@@ -154,41 +147,41 @@
       padding: 12px 25px; background: var(--valentine-red); color: white; border: none;
       border-radius: 50px; cursor: pointer; font-weight: bold; font-size: 0.9rem;
       box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-top: auto; margin-bottom: 10px;
-      transition: transform 0.2s;
     }
-    button:active { transform: scale(0.95); }
 
     .btn-wrap { 
       position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-      display: flex; gap: 20px; align-items: center; justify-content: center; width: 100%;
+      display: flex; gap: 15px; align-items: center; justify-content: center; width: 100%;
     }
 
-    .big-btn { padding: 18px 35px; font-size: 1.2rem; margin: 0; }
+    .big-btn { padding: 15px 30px; font-size: 1.1rem; margin: 0; }
     #no-btn { background: #adb5bd; position: relative; transition: all 0.1s ease-out; }
 
-    /* --- CHARACTERS (Z-INDEX ADJUSTED) --- */
+    /* --- CHARACTERS --- */
     .character {
-      position: fixed; bottom: -10px; width: 250px; height: auto; z-index: 150; /* Above background, below message */
-      opacity: 0; transform: scale(0); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease-out;
+      position: fixed; bottom: -10px; width: 220px; height: auto; z-index: 150;
+      opacity: 0; transform: scale(0); transition: all 0.5s ease-out;
     }
     #char-left { left: 2%; } #char-right { right: 2%; }
     .show-char { opacity: 1; transform: scale(1); animation: bob 3s ease-in-out infinite 0.5s; }
 
-    @keyframes bob { 0%, 100% { transform: scale(1) translateY(0); } 50% { transform: scale(1) translateY(-20px); } }
+    @keyframes bob { 0%, 100% { transform: scale(1) translateY(0); } 50% { transform: scale(1) translateY(-15px); } }
 
-    .balloon {
-      position: absolute; bottom: -150px; width: 60px; height: 75px;
-      background: var(--baby-blue); border-radius: 50%; opacity: 0.8; z-index: 10;
-      animation: floatUp 4s ease-in forwards;
+    /* --- MOBILE RESPONSIVENESS --- */
+    @media (max-width: 500px) {
+      .greeting-text { font-size: 2.5rem; }
+      .book { width: 300px; height: 400px; }
+      #peeking-girl { width: 300px; left: -100px; } 
+      .character { width: 120px; }
     }
-    .balloon::after { content: ""; position: absolute; bottom: -40px; left: 50%; width: 2px; height: 40px; background: rgba(255,255,255,0.7); }
-    @keyframes floatUp { to { transform: translateY(-120vh) translateX(50px); opacity: 0; } }
 
     .hidden { opacity: 0; visibility: hidden; }
     .fade-out-book { opacity: 0; transform: scale(0.8); pointer-events: none; }
   </style>
 </head>
 <body>
+
+  <img src="peeking.png" id="peeking-girl">
 
   <div id="greeting-overlay" onclick="handleGreeting()">
     <div id="greeting-text" class="greeting-text">Can you guess what this is about?</div>
@@ -201,8 +194,9 @@
       <p>When i look back at my favorite moments lately, you’re in all of them. I’m grateful for the way you make me laugh, the way you listen when I’m having a long day, and just the way things feel easier when you’re around.</p>
       <p>You aren't just someone i'm dating babb, you're my favorite person to talk to and the best part of my day.</p>
       <p>Thank you for being exactly who you are and thank you also for choosing to spend your time with me. It means more to me than i can really put into words.</p>
-      <div class="final-badge">Happy Valentine’s Day My Love. I’m so glad i get to call you mine. 💙</div>
-      <div style="height: 300px;"></div> </div>
+      <div class="final-badge">Happy Valentine’s Day My Love. 💙</div>
+      <div style="height: 350px;"></div>
+    </div>
   </div>
 
   <img src="left-char.png" id="char-left" class="character">
@@ -210,19 +204,13 @@
 
   <div class="book" id="main-book">
     <div class="page" id="p1" style="z-index: 4;">
-      <div class="front">
-        <button onclick="flip(1)">See what's inside</button>
-      </div>
+      <div class="front"><button onclick="flip(1)">See what's inside</button></div>
       <div class="back"></div>
     </div>
-
     <div class="page" id="p2" style="z-index: 3;">
-      <div class="front">
-        <button onclick="flip(2)">Press me</button>
-      </div>
+      <div class="front"><button onclick="flip(2)">Press me</button></div>
       <div class="back"></div>
     </div>
-
     <div class="page" id="p3" style="z-index: 2;">
       <div class="front">
         <div class="btn-wrap">
@@ -242,6 +230,7 @@
       if(isTransitioning) return;
       const textElement = document.getElementById('greeting-text');
       const overlay = document.getElementById('greeting-overlay');
+      const peekChar = document.getElementById('peeking-girl');
       clickCount++;
 
       if (clickCount === 1) {
@@ -253,7 +242,12 @@
           textElement.innerText = "Here it goes loveee hihi";
           textElement.style.opacity = '1';
           isTransitioning = true;
-          setTimeout(() => { overlay.classList.add('hidden'); }, 3000); 
+          // The girl and the overlay will now fade together after 3 seconds
+          setTimeout(() => { 
+            overlay.classList.add('hidden'); 
+            peekChar.style.opacity = '0'; 
+            setTimeout(() => { peekChar.classList.add('hidden'); }, 1500);
+          }, 3000); 
         }, 500);
       }
     }
@@ -263,15 +257,12 @@
     function celebrate() {
       document.getElementById('char-left').classList.add('show-char');
       document.getElementById('char-right').classList.add('show-char');
-      for(let i=0; i<15; i++) { setTimeout(createBalloon, i * 150); }
-      
       startConfetti();
 
       setTimeout(() => {
         document.getElementById('main-book').classList.add('fade-out-book');
         setTimeout(() => {
-          const finalOverlay = document.getElementById('final-message-overlay');
-          finalOverlay.classList.add('show');
+          document.getElementById('final-message-overlay').classList.add('show');
           setTimeout(() => {
             const scrollContainer = document.getElementById('scroll-content');
             const scrollInterval = setInterval(() => {
@@ -288,30 +279,17 @@
     function startConfetti() {
       const duration = 5 * 1000;
       const animationEnd = Date.now() + duration;
-      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 300 };
-      const randomInRange = (min, max) => Math.random() * (max - min) + min;
       const interval = setInterval(function() {
         const timeLeft = animationEnd - Date.now();
         if (timeLeft <= 0) return clearInterval(interval);
-        const particleCount = 50 * (timeLeft / duration);
-        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }, colors: ['#a2d2ff', '#ffffff', '#7fb6e1'] }));
-        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }, colors: ['#a2d2ff', '#ffffff', '#7fb6e1'] }));
+        confetti({ particleCount: 40, spread: 70, origin: { y: 0.6 }, colors: ['#a2d2ff', '#ffffff', '#ff4d6d'] });
       }, 250);
-    }
-
-    function createBalloon() {
-      const balloon = document.createElement("div");
-      balloon.className = "balloon";
-      balloon.style.left = Math.random() * 100 + "vw";
-      balloon.style.backgroundColor = Math.random() > 0.5 ? "#a2d2ff" : "#7fb6e1";
-      document.body.appendChild(balloon);
-      setTimeout(() => balloon.remove(), 4000);
     }
 
     function moveNo() {
       const btn = document.getElementById('no-btn');
-      const x = Math.random() * 200 - 100;
-      const y = Math.random() * 200 - 100;
+      const x = Math.random() * 150 - 75;
+      const y = Math.random() * 150 - 75;
       btn.style.transform = `translate(${x}px, ${y}px)`;
     }
   </script>
