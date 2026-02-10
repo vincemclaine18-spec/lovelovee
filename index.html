@@ -43,9 +43,14 @@
       background: radial-gradient(circle, #ffb3c1 0%, #ff85a1 100%);
       display: flex;
       justify-content: center; align-items: center;
-      z-index: 100;
+      z-index: 120;
       cursor: pointer;
-      transition: opacity 1.5s ease, visibility 1.5s;
+      transition: opacity 1.5s ease, visibility 1.5s ease;
+    }
+
+    #greeting-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
     }
 
     .greeting-text {
@@ -64,7 +69,7 @@
       50% { transform: translateY(-20px); }
     }
 
-    /* --- FINAL POP-OUT MESSAGE (EXACT STYLE FROM YOUR CODE) --- */
+    /* --- FINAL POP-OUT MESSAGE --- */
     #final-message-overlay {
       position: fixed;
       top: 0; left: 0;
@@ -138,13 +143,21 @@
       display: flex; flex-direction: column;
       backface-visibility: hidden; border-radius: 0 15px 15px 0;
       background-size: 100% 100%; background-repeat: no-repeat;
-      justify-content: center; align-items: center;
     }
 
-    .front { background-color: var(--baby-blue); z-index: 2; }
+    .front { background-color: var(--baby-blue); z-index: 2; justify-content: center; align-items: center; }
+    
     #p1 .front { background-image: url("cover.jpg"); border-left: 10px solid #7fb6e1; }
-    #p2 .front { background-image: url("page2.jpg"); }
-    #p3 .front { background-image: url("page3.jpg"); }
+    
+    /* --- EDITED: PAGE 2 BUTTON POSITION --- */
+    #p2 .front { 
+      background-image: url("page2.jpg"); 
+      justify-content: flex-end; /* Pushes content to bottom */
+      align-items: flex-start;    /* Pushes content to left */
+    }
+
+    #p3 .front { background-image: url("page3.jpg"); justify-content: center; align-items: center; }
+    
     .back { background: #fdfdfd; transform: rotateY(180deg); z-index: 1; border-radius: 15px 0 0 15px; }
     .page-flipped { transform: rotateY(-180deg); }
 
