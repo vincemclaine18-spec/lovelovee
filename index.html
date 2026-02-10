@@ -21,7 +21,6 @@
       overflow: hidden;
     }
 
-    /* --- UPDATED TO 4:5 RATIO (380x475) --- */
     .book { 
       position: relative; 
       width: 380px; 
@@ -43,12 +42,9 @@
       padding: 20px; box-sizing: border-box;
       display: flex; flex-direction: column;
       backface-visibility: hidden; border-radius: 0 15px 15px 0;
-      
-      /* STRETCH TO FILL EDGES */
       background-size: 100% 100%; 
       background-repeat: no-repeat;
       background-position: center;
-      
       justify-content: center; align-items: center;
     }
 
@@ -60,26 +56,64 @@
     #p4 .front { background-image: url("page4.jpg"); }
 
     .back { 
-      background: #fdfdfd; transform: rotateY(180deg); z-index: 1; border-radius: 15px 0 0 15px;
+      background: #fdfdfd; 
+      transform: rotateY(180deg); 
+      z-index: 1; 
+      border-radius: 15px 0 0 15px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M20 10c-2 0-4 2-4 5s2 7 4 7 4-4 4-7-2-5-4-5zm-2 15c0 3 2 5 2 5s2-2 2-5h-4z' fill='%23a2d2ff' fill-opacity='0.4'/%3E%3C/svg%3E");
     }
 
     .page-flipped { transform: rotateY(-180deg); }
     
     .message-container {
-      overflow-y: auto; max-height: 100%; text-align: center;
-      background: rgba(162, 210, 255, 0.7); padding: 15px; border-radius: 15px; backdrop-filter: blur(3px);
+      overflow-y: auto; 
+      max-height: 90%; 
+      text-align: center;
+      background: rgba(162, 210, 255, 0.85); 
+      padding: 20px; 
+      border-radius: 15px; 
+      backdrop-filter: blur(5px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
 
-    p { line-height: 1.4; color: white; font-weight: bold; font-size: 0.9rem; text-shadow: 1px 1px 4px rgba(0,0,0,0.5); }
+    .message-container::-webkit-scrollbar { width: 5px; }
+    .message-container::-webkit-scrollbar-thumb { background: white; border-radius: 10px; }
+
+    h2 { color: white; font-size: 1.4rem; text-shadow: 2px 2px 8px rgba(0,0,0,0.4); margin-bottom: 10px; }
+    p { line-height: 1.6; color: white; font-weight: bold; font-size: 0.95rem; text-shadow: 1px 1px 4px rgba(0,0,0,0.3); margin-bottom: 15px; }
 
     button {
       padding: 12px 25px; background: var(--valentine-red); color: white; border: none;
       border-radius: 50px; cursor: pointer; font-weight: bold; font-size: 0.9rem;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-top: auto; margin-bottom: 5px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-top: auto; margin-bottom: 10px;
+      transition: transform 0.2s;
+    }
+    button:active { transform: scale(0.95); }
+
+    /* --- UPDATED BUTTON CENTERING & SIZE --- */
+    .btn-wrap { 
+      position: absolute; 
+      top: 50%; 
+      left: 50%; 
+      transform: translate(-50%, -50%); 
+      display: flex; 
+      gap: 20px; 
+      align-items: center; 
+      justify-content: center; 
+      width: 100%;
     }
 
-    .btn-wrap { position: relative; width: 100%; height: 80px; margin-top: auto; }
-    #no-btn { background: #adb5bd; position: absolute; left: 50%; transform: translateX(-50%); transition: all 0.1s ease-out; }
+    .big-btn {
+      padding: 18px 35px;
+      font-size: 1.2rem;
+      margin: 0; /* Remove auto margins to keep flex alignment clean */
+    }
+
+    #no-btn { 
+      background: #adb5bd; 
+      position: relative; /* Changed from absolute to allow flex alignment */
+      transition: all 0.1s ease-out; 
+    }
 
     .character {
       position: fixed; bottom: -10px; width: 250px; height: auto; z-index: 10;
@@ -96,6 +130,8 @@
       background: var(--baby-blue); border-radius: 50%; opacity: 0.8; z-index: 10;
       animation: floatUp 4s ease-in forwards;
     }
+    .balloon::after { content: ""; position: absolute; bottom: -40px; left: 50%; width: 2px; height: 40px; background: rgba(255,255,255,0.7); }
+
     @keyframes floatUp { to { transform: translateY(-120vh) translateX(50px); opacity: 0; } }
   </style>
 </head>
@@ -122,8 +158,8 @@
     <div class="page" id="p3" style="z-index: 2;">
       <div class="front">
         <div class="btn-wrap">
-          <button onclick="celebrate()">YES! 💕</button>
-          <button id="no-btn" onmouseover="moveNo()" onclick="moveNo()">No</button>
+          <button class="big-btn" onclick="celebrate()">YES! 💕</button>
+          <button id="no-btn" class="big-btn" onmouseover="moveNo()" onclick="moveNo()">No</button>
         </div>
       </div>
       <div class="back"></div>
@@ -132,8 +168,12 @@
     <div class="page" id="p4" style="z-index: 1;">
       <div class="front">
         <div class="message-container">
+          <h2>To My Love</h2>
           <p>I wanted to take a moment today to tell you how lucky i feel to have you in my life love. Sometimes i don't say it enough, but i am so incredibly thankful for you po.</p>
-          <p>Thank you for being exactly who you are. Happy Valentine’s Day My Love. 💙</p>
+          <p>When i look back at my favorite moments lately, you’re in all of them. I’m grateful for the way you make me laugh, the way you listen when I’m having a long day, and just the way things feel easier when you’re around.</p>
+          <p>You aren't just someone i'm dating babb, you're my favorite person to talk to and the best part of my day.</p>
+          <p>Thank you for being exactly who you are and thank you also for choosing to spend your time with me. It means more to me than i can really put into words.</p>
+          <p style="color: var(--valentine-red); background: white; padding: 10px 20px; border-radius: 25px; display: inline-block;">Happy Valentine’s Day My Love. I’m so glad i get to call you mine. 💙</p>
         </div>
       </div>
     </div>
@@ -146,6 +186,7 @@
       const balloon = document.createElement("div");
       balloon.className = "balloon";
       balloon.style.left = Math.random() * 100 + "vw";
+      balloon.style.backgroundColor = Math.random() > 0.5 ? "#a2d2ff" : "#7fb6e1";
       document.body.appendChild(balloon);
       setTimeout(() => balloon.remove(), 4000);
     }
@@ -155,14 +196,26 @@
       document.getElementById('char-left').classList.add('show-char');
       document.getElementById('char-right').classList.add('show-char');
       for(let i=0; i<15; i++) { setTimeout(createBalloon, i * 150); }
-      confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#a2d2ff', '#ffffff', '#ff4d6d'] });
+
+      const duration = 5 * 1000;
+      const animationEnd = Date.now() + duration;
+      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+      const randomInRange = (min, max) => Math.random() * (max - min) + min;
+      const interval = setInterval(function() {
+        const timeLeft = animationEnd - Date.now();
+        if (timeLeft <= 0) return clearInterval(interval);
+        const particleCount = 50 * (timeLeft / duration);
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }, colors: ['#a2d2ff', '#ffffff', '#7fb6e1'] }));
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }, colors: ['#a2d2ff', '#ffffff', '#7fb6e1'] }));
+      }, 250);
     }
 
     function moveNo() {
       const btn = document.getElementById('no-btn');
+      // Limit movement so it stays within the page view
       const x = Math.random() * 200 - 100;
-      const y = Math.random() * 100 - 50;
-      btn.style.transform = `translateX(-50%) translate(${x}px, ${y}px)`;
+      const y = Math.random() * 200 - 100;
+      btn.style.transform = `translate(${x}px, ${y}px)`;
     }
   </script>
 </body>
