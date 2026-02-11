@@ -23,16 +23,16 @@
       touch-action: manipulation;
     }
 
-    /* --- PEEKING CHARACTER (NOW SYNCHRONIZED) --- */
+    /* --- PEEKING CHARACTER --- */
     #peeking-girl {
       position: fixed;
       left: -40px; 
       bottom: 10%;
       width: 280px; 
-      z-index: 130; /* Higher than overlay so it's clearly visible */
+      z-index: 130;
       transform: rotate(12deg);
       pointer-events: none;
-      opacity: 1; /* Start visible immediately with the text */
+      opacity: 1;
       transition: opacity 1.5s ease; 
     }
 
@@ -56,13 +56,14 @@
 
     .greeting-text {
       font-family: 'Great Vibes', cursive;
-      font-size: 4.5rem;
+      font-size: 3.5rem; 
       color: white;
       text-align: center;
       text-shadow: 3px 3px 15px rgba(255, 77, 109, 0.5);
       animation: floatText 3s ease-in-out infinite;
-      padding: 20px;
+      padding: 40px;
       transition: opacity 0.5s ease;
+      max-width: 800px;
     }
 
     @keyframes floatText {
@@ -98,28 +99,18 @@
 
     .pop-out-content h2 { 
       font-family: 'Great Vibes', cursive; 
-      font-size: 4rem; 
-      color: white; 
-      margin-bottom: 25px; 
+      font-size: 4rem; color: white; margin-bottom: 25px; 
       text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 2px 2px 10px rgba(0,0,0,0.2);
     }
 
     .pop-out-content p { 
-      font-size: 1.5rem; 
-      line-height: 1.8; 
-      color: white; 
-      margin-bottom: 30px; 
-      font-weight: bold;
-      text-shadow: 0 0 15px rgba(255, 255, 255, 0.6), 1px 1px 5px rgba(0,0,0,0.2);
+      font-size: 1.5rem; line-height: 1.8; color: white; margin-bottom: 30px; 
+      font-weight: bold; text-shadow: 0 0 15px rgba(255, 255, 255, 0.6), 1px 1px 5px rgba(0,0,0,0.2);
     }
 
     .final-badge {
-      color: var(--valentine-red); 
-      background: white; 
-      padding: 15px 35px; 
-      border-radius: 50px; 
-      display: inline-block; 
-      font-size: 1.6rem;
+      color: var(--valentine-red); background: white; padding: 15px 35px; 
+      border-radius: 50px; display: inline-block; font-size: 1.6rem;
       box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     }
 
@@ -143,19 +134,28 @@
       padding: 20px; box-sizing: border-box;
       display: flex; flex-direction: column;
       backface-visibility: hidden; border-radius: 0 15px 15px 0;
-      background-size: 100% 100%; background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
     }
 
+    /* --- PAGES --- */
     .front { background-color: var(--baby-blue); z-index: 2; justify-content: center; align-items: center; }
-    #p1 .front { background-image: url("cover.jpg"); border-left: 10px solid #7fb6e1; }
-    #p2 .front { 
-      background-image: url("page2.jpg"); 
-      justify-content: flex-end; 
-      align-items: flex-start; 
-    }
-    #p3 .front { background-image: url("page3.jpg"); justify-content: center; align-items: center; }
     
-    .back { background: #fdfdfd; transform: rotateY(180deg); z-index: 1; border-radius: 15px 0 0 15px; }
+    #p1 .front { background-image: url("cover.jpg"); border-left: 10px solid #7fb6e1; }
+    #p2 .front { background-image: url("page2.jpg"); }
+    #p3 .front { background-image: url("page3.jpg"); }
+
+    /* --- THE HEART DESIGN ON THE BACK --- */
+    .back { 
+      background: #fdfdfd; 
+      transform: rotateY(180deg); 
+      z-index: 1; 
+      border-radius: 15px 0 0 15px;
+      /* Fixed: Using the Heart SVG from your first code snippet */
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M20 10c-2 0-4 2-4 5s2 7 4 7 4-4 4-7-2-5-4-5zm-2 15c0 3 2 5 2 5s2-2 2-5h-4z' fill='%23a2d2ff' fill-opacity='0.4'/%3E%3C/svg%3E");
+      background-size: 40px 40px;
+    }
+
     .page-flipped { transform: rotateY(-180deg); }
 
     /* --- BUTTONS --- */
@@ -163,15 +163,17 @@
       padding: 12px 25px; background: var(--valentine-red); color: white; border: none;
       border-radius: 50px; cursor: pointer; font-weight: bold; font-size: 0.9rem;
       box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-top: auto; margin-bottom: 10px;
+      z-index: 10;
     }
 
     .btn-wrap { 
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+      position: absolute; top: 70%; left: 50%; 
+      transform: translate(-50%, -50%); 
       display: flex; gap: 20px; align-items: center; justify-content: center; width: 100%;
     }
 
     .big-btn { padding: 18px 35px; font-size: 1.2rem; }
-    #no-btn { background: #adb5bd; position: relative; transition: all 0.1s ease-out; }
+    #no-btn { background: #adb5bd; position: relative; transition: transform 0.15s ease-out; }
 
     /* --- CHARACTERS --- */
     .character {
@@ -197,7 +199,7 @@
   <img src="peeking.png" id="peeking-girl">
 
   <div id="greeting-overlay" onclick="handleGreeting()">
-    <div id="greeting-text" class="greeting-text">Can you guess what this is about?</div>
+    <div id="greeting-text" class="greeting-text">Hii lovee, so i made you something, it's my first time so probably it's not that much but</div>
   </div>
 
   <div id="final-message-overlay">
@@ -207,7 +209,7 @@
       <p>When i look back at my favorite moments lately, you’re in all of them. I’m grateful for the way you make me laugh, the way you listen when I’m having a long day, and just the way things feel easier when you’re around.</p>
       <p>You aren't just someone i'm dating babb, you're my favorite person to talk to and the best part of my day.</p>
       <p>Thank you for being exactly who you are and thank you also for choosing to spend your time with me. It means more to me than i can really put into words.</p>
-      <div class="final-badge">Happy Valentine’s Day My Love. I’m so glad i get to call you mine. 💙</div>
+      <div class="final-badge">Advance Happy Valentine’s Day My Love. I’m so glad i get to call you mine. I love youu so much 💙</div>
       <div style="height: 350px;"></div>
     </div>
   </div>
@@ -220,10 +222,12 @@
       <div class="front"><button onclick="flip(1)">See what's inside</button></div>
       <div class="back"></div>
     </div>
+
     <div class="page" id="p2" style="z-index: 3;">
       <div class="front"><button onclick="flip(2)">Press me</button></div>
       <div class="back"></div>
     </div>
+
     <div class="page" id="p3" style="z-index: 2;">
       <div class="front">
         <div class="btn-wrap">
@@ -248,14 +252,16 @@
 
       if (clickCount === 1) {
         textElement.style.opacity = '0';
-        setTimeout(() => { textElement.innerText = "Are you sure?"; textElement.style.opacity = '1'; }, 500);
+        setTimeout(() => { textElement.innerText = "Can you guess what this is about?"; textElement.style.opacity = '1'; }, 500);
       } else if (clickCount === 2) {
+        textElement.style.opacity = '0';
+        setTimeout(() => { textElement.innerText = "Are you sure?"; textElement.style.opacity = '1'; }, 500);
+      } else if (clickCount === 3) {
         textElement.style.opacity = '0';
         setTimeout(() => {
           textElement.innerText = "Here it goes loveee hihi";
           textElement.style.opacity = '1';
           isTransitioning = true;
-          // Synchronized fade out for text, overlay, AND image
           setTimeout(() => { 
             overlay.classList.add('hidden'); 
             peekChar.style.opacity = '0'; 
@@ -316,8 +322,8 @@
 
     function moveNo() {
       const btn = document.getElementById('no-btn');
-      const x = Math.random() * 200 - 100;
-      const y = Math.random() * 200 - 100;
+      const x = Math.random() * 300 - 150;
+      const y = Math.random() * 300 - 150;
       btn.style.transform = `translate(${x}px, ${y}px)`;
     }
   </script>
